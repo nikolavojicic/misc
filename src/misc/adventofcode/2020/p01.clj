@@ -4,17 +4,13 @@
             [misc.util :as util]))
 
 
-(def +in1 [1721
-           979
-           366
-           299
-           675
-           1456])
+(defn in [f]
+  (->> f io/resource util/reducible-lines
+       (into [] (map #(Long/parseLong %)))))
 
 
-(def +in2 (->> "adventofcode_2020_p01_i01.txt"
-               io/resource util/reducible-lines
-               (into [] (map #(Long/parseLong %)))))
+(def +in1 (in "adventofcode_2020_p01_i01.txt"))
+(def +in2 (in "adventofcode_2020_p01_i02.txt"))
 
 
 (with-test
