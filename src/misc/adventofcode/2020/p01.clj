@@ -1,6 +1,7 @@
 (ns misc.adventofcode.2020.p01
-  (:require [clojure.java.io :as io]
-            [clojure.test :refer [with-test is]]))
+  (:require [clojure.test :refer [with-test is]]
+            [clojure.java.io :as io]
+            [misc.util :as util]))
 
 
 (def +in1 [1721
@@ -12,8 +13,8 @@
 
 
 (def +in2 (->> "adventofcode_2020_p01_i01.txt"
-               io/resource io/reader line-seq
-               (mapv #(Long/parseLong %))))
+               io/resource util/reducible-lines
+               (into [] (map #(Long/parseLong %)))))
 
 
 (with-test
