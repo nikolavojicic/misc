@@ -4,9 +4,10 @@
             [misc.util :as util]))
 
 
-(defn in [f]
+(defn in
+  [f]
   (->> f io/resource util/reducible-lines
-       (into [] (map #(Long/parseLong %)))))
+       (into [] (map parse-long))))
 
 
 (def +in1 (in "adventofcode_2020_p01_i01.txt"))
@@ -36,7 +37,7 @@
        (* i1 i2 i3))))
 
   (is (= (solve2 +in1) 241861950))
-  (is (= (solve2 +in2) 85555470)))
+  (is (= (solve2 +in2)  85555470)))
 
 
 #_(clojure.test/run-tests *ns*)
