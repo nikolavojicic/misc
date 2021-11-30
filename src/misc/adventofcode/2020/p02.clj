@@ -4,13 +4,8 @@
             [misc.util :as util]))
 
 
-(defn in
-  [f]
-  (-> f io/resource util/reducible-lines))
-
-
-(def +in1 (in "adventofcode_2020_p02_i01.txt"))
-(def +in2 (in "adventofcode_2020_p02_i02.txt"))
+(def +in1 (-> "adventofcode_2020_p02_i01.txt" io/resource util/reducible-lines))
+(def +in2 (-> "adventofcode_2020_p02_i02.txt" io/resource util/reducible-lines))
 
 
 (defn parse-password
