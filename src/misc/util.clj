@@ -21,3 +21,9 @@
             (if-let [line (.readLine r)]
               (recur (f state line))
               state)))))))
+
+
+(defn parse-char
+  [s]
+  (assert (= (count s) 1))
+  (.charAt s 0))
