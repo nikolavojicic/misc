@@ -10,8 +10,8 @@
 
 (defn parse-password
   [line]
-  (-> (re-find #"(\d+)-(\d+) ([a-zA-Z]): (.+)" line)
-      rest vec
+  (-> #"(\d+)-(\d+) ([a-zA-Z]): (.+)"
+      (re-find line) rest vec
       (update 0 parse-long)
       (update 1 parse-long)
       (update 2 util/parse-char)))
