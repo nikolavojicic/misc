@@ -1,12 +1,12 @@
 (ns misc.adventofcode.2020.p01
   (:require [clojure.test :refer [with-test is]]
             [clojure.java.io :as io]
-            [misc.util :as util]))
+            [net.cgrand.xforms.io :as xfio]))
 
 
 (defn in
   [f]
-  (->> f io/resource util/reducible-lines
+  (->> f io/resource xfio/lines-in
        (into [] (map parse-long))))
 
 

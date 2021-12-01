@@ -1,11 +1,13 @@
 (ns misc.adventofcode.2020.p02
   (:require [clojure.test :refer [with-test is]]
             [clojure.java.io :as io]
+            [net.cgrand.xforms :as xf]
+            [net.cgrand.xforms.io :as xfio]
             [misc.util :as util]))
 
 
-(def +in1 (-> "adventofcode_2020_p02_i01.txt" io/resource util/reducible-lines))
-(def +in2 (-> "adventofcode_2020_p02_i02.txt" io/resource util/reducible-lines))
+(def +in1 (-> "adventofcode_2020_p02_i01.txt" io/resource xfio/lines-in))
+(def +in2 (-> "adventofcode_2020_p02_i02.txt" io/resource xfio/lines-in))
 
 
 (defn parse-password
@@ -35,10 +37,7 @@
 
   (defn solve
     [pred input]
-    (transduce
-     (comp (filter pred)
-           (map (constantly 1)))
-     + input))
+    (xf/count (filter pred) input))
 
   (is (= (solve valid-password1? +in1)   2))
   (is (= (solve valid-password1? +in2) 542))
