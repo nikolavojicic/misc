@@ -7,17 +7,15 @@
 
 (def +in1 (-> "adventofcode_2020_p03_i01.txt" io/resource xfio/lines-in))
 (def +in2 (-> "adventofcode_2020_p03_i02.txt" io/resource xfio/lines-in))
+(def +directions [[1 1] [3 1] [5 1] [7 1] [1 2]])
 
 
 (with-test
 
   (defn solve
     ([directions]
-     (comp (xf/transjuxt
-            (map #(apply solve %) directions))
-           cat))
-    ([down right input]
-     (xf/some (solve down right) input))
+     (xf/multiplex
+      (mapv #(apply solve %) directions)))
     ([right down]
      (comp (drop 1)
            (partition-all down)
@@ -27,13 +25,15 @@
               (nth line (mod (* (inc ix) right)
                              (count line)))))
            (filter #{\#})
-           xf/count)))
+           xf/count))
+    ([down right input]
+     (xf/some (solve down right) input)))
 
   (is (= (solve 3 1 +in1)   7))
   (is (= (solve 3 1 +in2) 270))
 
-  (is (= (transduce (solve [[1 1] [3 1] [5 1] [7 1] [1 2]]) * +in1)        336))
-  (is (= (transduce (solve [[1 1] [3 1] [5 1] [7 1] [1 2]]) * +in2) 2122848000)))
+  (is (= (transduce (solve +directions) * +in1)        336))
+  (is (= (transduce (solve +directions) * +in2) 2122848000)))
 
 
 #_(clojure.test/run-tests *ns*)
