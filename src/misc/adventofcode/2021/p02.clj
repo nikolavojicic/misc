@@ -2,7 +2,6 @@
   (:require [clojure.test :refer [with-test is]]
             [clojure.string :as str]
             [clojure.java.io :as io]
-            [net.cgrand.xforms :as xf]
             [net.cgrand.xforms.io :as xfio]))
 
 
@@ -12,23 +11,48 @@
 
 (defn parse-direction
   [line]
-  (-> (apply hash-map (str/split line #" "))
-      (update-vals parse-long)
-      (update-keys keyword)))
+  (-> (str/split line #" ")
+      (update 0 keyword)
+      (update 1 parse-long)))
 
 
 (with-test
 
-  (defn solve
+  (defn solve1
     [input]
     (let [{:keys [forward down up]}
-          (transduce (map parse-direction)
-                     (partial merge-with +)
-                     input)]
+          (transduce
+           (comp (map parse-direction)
+                 (map #(apply hash-map %)))
+           (partial merge-with +)
+           input)]
       (* forward (- down up))))
 
-  (is (= (solve +in1)     150))
-  (is (= (solve +in2) 2073315)))
+  (is (= (solve1 +in1)     150))
+  (is (= (solve1 +in2) 2073315)))
+
+
+(with-test
+
+  (defn solve2
+    [input]
+    (let [{:keys [horiz depth]}
+          (transduce
+           (map parse-direction)
+           (completing
+            (fn [ret [direction x]]
+              (case direction
+                :forward (-> ret
+                             (update :horiz + x)
+                             (update :depth + (* (:aim ret) x)))
+                :down (update ret :aim + x)
+                :up   (update ret :aim - x))))
+           {:horiz 0 :depth 0 :aim 0}
+           input)]
+      (* horiz depth)))
+
+  (is (= (solve2 +in1)        900))
+  (is (= (solve2 +in2) 1840311528)))
 
 
 #_(clojure.test/run-tests *ns*)
