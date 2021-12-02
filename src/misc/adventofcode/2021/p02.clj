@@ -36,20 +36,19 @@
 
   (defn solve2
     [input]
-    (let [{:keys [horiz depth]}
-          (transduce
-           (map parse-direction)
-           (completing
-            (fn [ret [direction x]]
-              (case direction
-                :forward (-> ret
-                             (update :horiz + x)
-                             (update :depth + (* (:aim ret) x)))
-                :down (update ret :aim + x)
-                :up   (update ret :aim - x))))
-           {:horiz 0 :depth 0 :aim 0}
-           input)]
-      (* horiz depth)))
+    (transduce
+     (map parse-direction)
+     (completing
+      (fn [ret [direction x]]
+        (case direction
+          :forward (-> ret
+                       (update :horiz + x)
+                       (update :depth + (* (:aim ret) x)))
+          :down (update ret :aim + x)
+          :up   (update ret :aim - x)))
+      #(->> (dissoc % :aim) vals (reduce *)))
+     {:horiz 0 :depth 0 :aim 0}
+     input))
 
   (is (= (solve2 +in1)        900))
   (is (= (solve2 +in2) 1840311528)))
