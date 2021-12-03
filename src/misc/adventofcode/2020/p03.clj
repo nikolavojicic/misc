@@ -5,8 +5,8 @@
             [net.cgrand.xforms.io :as xfio]))
 
 
-(def +in1 (-> "adventofcode_2020_p03_i01.txt" io/resource xfio/lines-in))
-(def +in2 (-> "adventofcode_2020_p03_i02.txt" io/resource xfio/lines-in))
+(def +in1 (-> "adventofcode/2020/p03_in01.txt" io/resource xfio/lines-in))
+(def +in2 (-> "adventofcode/2020/p03_in02.txt" io/resource xfio/lines-in))
 (def +directions [[1 1] [3 1] [5 1] [7 1] [1 2]])
 
 

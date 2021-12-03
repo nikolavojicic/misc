@@ -10,8 +10,8 @@
        (into [] (map parse-long))))
 
 
-(def +in1 (in "adventofcode_2020_p01_i01.txt"))
-(def +in2 (in "adventofcode_2020_p01_i02.txt"))
+(def +in1 (in "adventofcode/2020/p01_in01.txt"))
+(def +in2 (in "adventofcode/2020/p01_in02.txt"))
 
 
 (with-test

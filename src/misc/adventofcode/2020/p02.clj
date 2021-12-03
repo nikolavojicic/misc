@@ -6,8 +6,8 @@
             [misc.util :as util]))
 
 
-(def +in1 (-> "adventofcode_2020_p02_i01.txt" io/resource xfio/lines-in))
-(def +in2 (-> "adventofcode_2020_p02_i02.txt" io/resource xfio/lines-in))
+(def +in1 (-> "adventofcode/2020/p02_in01.txt" io/resource xfio/lines-in))
+(def +in2 (-> "adventofcode/2020/p02_in02.txt" io/resource xfio/lines-in))
 
 
 (defn parse-password
