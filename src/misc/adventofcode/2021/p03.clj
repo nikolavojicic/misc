@@ -59,18 +59,20 @@
 (with-test
 
   (defn solve2
-    [criteria input]
-    (loop [ix 0, input input]
-      (let [bit (->> input
-                     (xf/into {} (xf/by-key #(nth-bit % ix) xf/count))
-                     (rating criteria))
-            remain (into [] (filter #(= bit (nth-bit % ix))) input)]
-        (if (second remain)
-          (recur (inc ix) remain)
-          (Integer/parseInt (first remain) 2)))))
+    ([input]
+     (* (solve2 0 input) (solve2 1 input)))
+    ([criteria input]
+     (loop [ix 0, input input]
+       (let [bit (->> input
+                      (xf/into {} (xf/by-key #(nth-bit % ix) xf/count))
+                      (rating criteria))
+             remain (into [] (filter #(= bit (nth-bit % ix))) input)]
+         (if (second remain)
+           (recur (inc ix) remain)
+           (Integer/parseInt (first remain) 2))))))
 
-  (is (= (* (solve2 0 +in1) (solve2 1 +in1))     230))
-  (is (= (* (solve2 0 +in2) (solve2 1 +in2)) 3414905)))
+  (is (= (solve2 +in1)     230))
+  (is (= (solve2 +in2) 3414905)))
 
 
 #_(clojure.test/run-tests *ns*)
