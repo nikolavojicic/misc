@@ -10,6 +10,11 @@
 (def +in2 (-> "adventofcode/2021/p03_in02.txt" io/resource xfio/lines-in))
 
 
+(defn nth-bit
+  [line ix]
+  (util/char->long (nth line ix)))
+
+
 (with-test
 
   (defn solve1
@@ -18,7 +23,7 @@
      (comp (xf/transjuxt
             (mapv
              (fn [ix]
-               (comp (xf/by-key #(util/char->long (nth % ix)) xf/count)
+               (comp (xf/by-key #(nth-bit % ix) xf/count)
                      (xf/into [])
                      (map #(mapv first (sort-by second %)))))
              (range (count (util/first-line input)))))
@@ -27,6 +32,45 @@
 
   (is (= (solve1 +in1)     198))
   (is (= (solve1 +in2) 4191876)))
+
+
+(with-test
+
+  (defn rating
+    [criteria freq]
+    (if (apply = (vals freq))
+      criteria
+      (let [[least-common most-common]
+            (keys (sort-by val freq))]
+        (if (= criteria 0)
+          least-common
+          most-common))))
+
+  (is (= (rating 0 {0 2, 1 3}) 0))
+  (is (= (rating 1 {0 2, 1 3}) 1))
+
+  (is (= (rating 0 {0 3, 1 2}) 1))
+  (is (= (rating 1 {0 3, 1 2}) 0))
+
+  (is (= (rating 0 {0 2, 1 2}) 0))
+  (is (= (rating 1 {0 2, 1 2}) 1)))
+
+
+(with-test
+
+  (defn solve2
+    [criteria input]
+    (loop [ix 0, input input]
+      (let [bit (->> input
+                     (xf/into {} (xf/by-key #(nth-bit % ix) xf/count))
+                     (rating criteria))
+            remain (into [] (filter #(= bit (nth-bit % ix))) input)]
+        (if (second remain)
+          (recur (inc ix) remain)
+          (Integer/parseInt (first remain) 2)))))
+
+  (is (= (* (solve2 0 +in1) (solve2 1 +in1))     230))
+  (is (= (* (solve2 0 +in2) (solve2 1 +in2)) 3414905)))
 
 
 #_(clojure.test/run-tests *ns*)
