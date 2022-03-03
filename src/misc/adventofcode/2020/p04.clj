@@ -28,7 +28,7 @@
   (set/subset? +req-fields (set (keys passport))))
 
 
-(defn valid-passport?
+(defn valid?
   [{:strs [byr iyr eyr hgt hcl ecl pid]}]
   (and byr iyr eyr hgt hcl ecl pid
        (between? 1920 byr 2002)
@@ -60,9 +60,9 @@
   (is (= (solve has-required-fields? +in1)   2))
   (is (= (solve has-required-fields? +in2) 226))
   (is (= (solve has-required-fields? +in3)   8))
-  (is (= (solve valid-passport?      +in1)   2))
-  (is (= (solve valid-passport?      +in2) 160))
-  (is (= (solve valid-passport?      +in3)   4)))
+  (is (= (solve valid?               +in1)   2))
+  (is (= (solve valid?               +in2) 160))
+  (is (= (solve valid?               +in3)   4)))
 
 
 #_(clojure.test/run-tests *ns*)
