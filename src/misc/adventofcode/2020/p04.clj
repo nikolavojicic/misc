@@ -12,17 +12,20 @@
 (def +in3 (-> "adventofcode/2020/p04_in03.txt" io/resource xfio/lines-in))
 
 
+(def +req-fields #{"byr" "iyr" "eyr" "hgt" "hcl" "ecl" "pid"})
+(def +req-ecl    #{"amb" "blu" "brn" "gry" "grn" "hzl" "oth"})
+
+
 (defn between?
   [from x to]
-  (if x
-    (<= from (or (parse-long x) 0) to)
+  (if-some [x (parse-long x)]
+    (<= from x to)
     false))
 
 
 (defn has-required-fields?
   [passport]
-  (set/subset? #{"byr" "iyr" "eyr" "hgt" "hcl" "ecl" "pid"}
-               (set (keys passport))))
+  (set/subset? +req-fields (set (keys passport))))
 
 
 (defn valid-passport?
@@ -34,7 +37,7 @@
        (or (between? 150 (str/replace hgt "cm" "") 193)
            (between?  59 (str/replace hgt "in" "")  76))
        (re-matches #"#([0-9]|[a-f]){6}" hcl)
-       (#{"amb" "blu" "brn" "gry" "grn" "hzl" "oth"} ecl)
+       (+req-ecl ecl)
        (re-matches #"[0-9]{9}" pid)
        true))
 
