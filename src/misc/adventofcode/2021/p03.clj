@@ -23,8 +23,7 @@
      (comp (xf/transjuxt
             (mapv
              (fn [ix]
-               (comp (xf/by-key #(nth-bit % ix) xf/count)
-                     (xf/into {})
+               (comp (xf/into-by-key {} #(nth-bit % ix) xf/count)
                      (map #(keys (sort-by val %)))))
              (range (count (util/first-line input)))))
            (mapcat (partial apply map (comp #(Integer/parseInt % 2) str))))
